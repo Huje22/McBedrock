@@ -16,6 +16,8 @@ public class RunFreeBedrock {
     private final String sourceFile, currentDir;
 
     public RunFreeBedrock() {
+        this.sourceFile = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
+        this.currentDir = System.getProperty("user.dir");
         this.downloadAssets();
         if (!this.isWindows()) {
             System.out.println("Twój system to nie windows!");
@@ -25,9 +27,6 @@ public class RunFreeBedrock {
             System.out.println("Twój system nie jest 64 bitowy!");
             System.exit(0);
         }
-
-        this.sourceFile = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
-        this.currentDir = System.getProperty("user.dir");
 
         final Path sourcePath = Paths.get(this.sourceFile);
         if (!Files.exists(sourcePath)) {
