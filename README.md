@@ -16,7 +16,8 @@ Jak pobrac?
 Pierwsze kroki<br/>
 * Zamknij wszytkie aplikacije typu : Xbox , Minecraft , Microsoft Store    <br/>
 * Pobierz plik `.jar` i `.bat` z [Mediafire](https://www.mediafire.com/folder/fhhl2zicx8cwl/instal+mc)
-* Odpal Plik `.bat` , musisz to zrobić jako administrator 
+* Odpal Plik `.bat` , musisz to zrobić jako administrator (Wyskoczy ci do tego okno)
+* Pobiorą ci się różne assety
 * Zainstaluj TakeOwnershipPro<br/>
 
 Następnie
