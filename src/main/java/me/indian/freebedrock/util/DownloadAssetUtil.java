@@ -28,6 +28,7 @@ public final class DownloadAssetUtil {
     }
 
     private static void downloadFile(final String saveFilePath) throws IOException {
+        //TODO: Zmień link do pobrania pliku, i włącz odrazu Minecraft po zakończeniu wszystkiego 
         final URL url = new URL("https://github.com/Huje22/McBedrock/releases/download/Assets/asstes.zip");
         final HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         final int fileSize = connection.getContentLength();
