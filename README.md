@@ -12,9 +12,8 @@ Musisz posiadac pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Jave 17
 
 ---
 
-#### Jak pobrać Jave 17?
-
-* Instalujesz poprostu ten plik [(Kliknij Mnie)](https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.msi),
+#### Jak pobrac Jave 23?
+* Instalujesz poprostu ten plik [(Kliknij Mnie)](https://download.oracle.com/java/23/latest/jdk-23_windows-x64_bin.msi),
   instalator jest łatwy w obsłudze
 
 #### Jak pobrać Demo?

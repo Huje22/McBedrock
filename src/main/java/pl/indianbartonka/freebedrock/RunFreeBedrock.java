@@ -1,4 +1,4 @@
-package me.indian.freebedrock;
+package pl.indianbartonka.freebedrock;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,10 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import me.indian.freebedrock.util.DownloadAssetUtil;
-import me.indian.util.DateUtil;
-import me.indian.util.logger.Logger;
-import me.indian.util.logger.LoggerConfiguration;
+import java.util.concurrent.TimeoutException;
+import pl.indianbartonka.freebedrock.util.DownloadAssetUtil;
+import pl.indianbartonka.util.logger.Logger;
+import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class RunFreeBedrock {
 
@@ -22,7 +22,7 @@ public class RunFreeBedrock {
     public RunFreeBedrock() {
         this.takeOwnershipProFile = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
         this.currentDir = System.getProperty("user.dir");
-        this.configuration = new LoggerConfiguration(true, Path.of(this.currentDir), DateUtil.getFixedDate());
+        this.configuration = LoggerConfiguration.builder().build();
         this.logger = new Logger(this.configuration) {
         };
 
@@ -37,7 +37,7 @@ public class RunFreeBedrock {
             return;
         }
 
-        DownloadAssetUtil.setLOGGER(this.logger);
+        DownloadAssetUtil.setLogger(this.logger);
         this.downloadAssets();
 
         final Path sourcePath = Paths.get(this.takeOwnershipProFile);
@@ -80,8 +80,9 @@ public class RunFreeBedrock {
                 this.logger.critical("Nie znaleziono pliku  \"Windows.ApplicationModel.Store.dll\" w aktualnym katalogu z " + asset + " !.");
                 try {
                     DownloadAssetUtil.downloadAssets();
-                } catch (final IOException exception) {
+                } catch (final IOException | TimeoutException exception) {
                     this.logger.critical("Nie udało się pobrać assetów!", exception);
+                    System.exit(0);
                 }
                 return;
             }
@@ -130,7 +131,7 @@ public class RunFreeBedrock {
     }
 
     private void runMinecraft() throws InterruptedException, IOException {
-        Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", "start minecraft:"}).waitFor();
+        Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", "start minecraft:"}).waitFor();
     }
 
     private void killAps() {
