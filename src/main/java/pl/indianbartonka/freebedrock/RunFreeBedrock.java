@@ -20,6 +20,7 @@ public class RunFreeBedrock {
     private final String takeOwnershipProFile, currentDir;
 
     public RunFreeBedrock() {
+        this.enableANSISupport();
         this.takeOwnershipProFile = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
         this.currentDir = System.getProperty("user.dir");
         this.configuration = LoggerConfiguration.builder().build();
@@ -132,6 +133,13 @@ public class RunFreeBedrock {
 
     private void runMinecraft() throws InterruptedException, IOException {
         Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", "start minecraft:"}).waitFor();
+    }
+
+    private void enableANSISupport()  {
+        try {
+            Runtime.getRuntime().exec("reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f").waitFor();
+        } catch (final InterruptedException | IOException ignored) {
+        }
     }
 
     private void killAps() {
