@@ -136,6 +136,7 @@ public class RunFreeBedrock {
     }
 
     private void enableANSISupport()  {
+        //Todo: Dodaj po prostu te polecenie w tym skrypcie bat
         try {
             Runtime.getRuntime().exec("reg add HKCU\\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f").waitFor();
         } catch (final InterruptedException | IOException ignored) {
