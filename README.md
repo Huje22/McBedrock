@@ -25,7 +25,7 @@ Musisz posiadac pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Jave 17
 
 #### Pierwsze kroki<br/>
 
-* Pobierz plik `FreeMinecraftBedrock-1.0.jar` i `start.bat`
+* Pobierz plik `FreeMinecraftBedrock-1.1.jar` i `start.bat`
   z [Github Releases](https://github.com/Huje22/McBedrock/releases/tag/1.0)
 * Odpal Plik `start.bat` , musisz to zrobić jako administrator
     * Wyskoczy ci okno po odpaleniu pliku bat aby odpalic program jako administrator, poprostu kliknij `TAK`
