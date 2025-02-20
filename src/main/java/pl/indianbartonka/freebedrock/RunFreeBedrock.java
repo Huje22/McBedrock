@@ -15,6 +15,7 @@ import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 
 public class RunFreeBedrock {
 
+    //TODO: Zrób rewrite kodu nie zapomnij o metodach usuwania z FileUtil
     private final LoggerConfiguration configuration;
     private final Logger logger;
     private final String takeOwnershipProFile, currentDir;
