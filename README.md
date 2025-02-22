@@ -13,6 +13,7 @@ Musisz posiadac pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Jave 17
 ---
 
 #### Jak pobrac Jave 23?
+
 * Instalujesz poprostu ten plik [(Kliknij Mnie)](https://download.oracle.com/java/23/latest/jdk-23_windows-x64_bin.msi),
   instalator jest łatwy w obsłudze
 
@@ -25,10 +26,12 @@ Musisz posiadac pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Jave 17
 
 #### Pierwsze kroki<br/>
 
-* Pobierz plik `FreeMinecraftBedrock-1.1.jar` i `start.bat`
+* Pobierz plik `FreeMinecraftBedrock-X.X.jar` i `start.bat`
   z [Github Releases](https://github.com/Huje22/McBedrock/releases/tag/1.0)
+    * X.X Oznacza najnowszą wersję
 * Odpal Plik `start.bat` , musisz to zrobić jako administrator
     * Wyskoczy ci okno po odpaleniu pliku bat aby odpalic program jako administrator, poprostu kliknij `TAK`
+* <u> Jeśli twój system jest zgodny kliknij możesz kliknąć guzik <b>Uruchom </b> </u>
 * Pobiorą ci się różne assety, zaczekaj cierpliwie
 * Zainstaluj TakeOwnershipPro jeśli go nie posiadasz
     * Pojawi się instalator, również jest łatwy w obsłudze
