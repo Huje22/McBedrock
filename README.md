@@ -31,14 +31,16 @@ Musisz posiadac pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Jave 17
     * X.X Oznacza najnowszą wersję
 * Odpal Plik `start.bat` , musisz to zrobić jako administrator
     * Wyskoczy ci okno po odpaleniu pliku bat aby odpalic program jako administrator, poprostu kliknij `TAK`
-* <u> Jeśli twój system jest zgodny kliknij możesz kliknąć guzik <b>Uruchom </b> </u>
+* <u> Jeśli twój system jest zgodny możesz kliknąć guzik <b>Uruchom </b> </u>
 * Pobiorą ci się różne assety, zaczekaj cierpliwie
 * Zainstaluj TakeOwnershipPro jeśli go nie posiadasz
     * Pojawi się instalator, również jest łatwy w obsłudze
 
 #### Następnie
 
-* Gdy wyskoczy ci takie okienko z guzikiem `TakeOwnership` kliknij na plik , potem ten guzik, a
+* Gdy wyskoczy ci takie okienko z guzikiem `TakeOwnership` kliknij na plik , potem guzik `TAKE OWNER SHIP`, a
   następnie `exit`, wyskoczy drugie takie samo okno, tam to samo
 * Jeśli w konsoli nie ma dodatkowych błędów ciesz sie zdjetym demo! <br/>
 
+
+//TODO: Popraw poradnik
