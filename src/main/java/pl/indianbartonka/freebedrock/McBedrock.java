@@ -103,6 +103,9 @@ public class McBedrock {
             final String processorName = SystemUtil.getProcesorName();
             final String graphicCards = SystemUtil.getGraphicCardName();
 
+            this.logger.info("&aProcesor:&b " + processorName);
+            this.logger.info("&aKarty Graficzne:&b " + graphicCards);
+
             processor.setText("Procesor: " + processorName);
             graphicCardsLabel.setText("Karty Graficzne: " + graphicCards);
         }).start();
