@@ -24,7 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import pl.indianbartonka.freebedrock.util.DownloadAssetUtil;
-import pl.indianbartonka.util.file.FileUtil;
+import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
 import pl.indianbartonka.util.system.SystemArch;
@@ -33,7 +34,6 @@ import pl.indianbartonka.util.system.SystemUtil;
 
 public class McBedrock {
 
-    private final LoggerConfiguration loggerConfiguration;
     private final Logger logger;
     private final String takeOnwershipProExe;
     private final String currentDir;
@@ -43,8 +43,7 @@ public class McBedrock {
     private boolean supportedSystem;
 
     public McBedrock() {
-        this.loggerConfiguration = LoggerConfiguration.builder().build();
-        this.logger = new Logger(this.loggerConfiguration) {
+        this.logger = new Logger(LoggerConfiguration.builder().build()) {
         };
         this.takeOnwershipProExe = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
         this.currentDir = System.getProperty("user.dir");
@@ -62,7 +61,7 @@ public class McBedrock {
     private void runGui() {
         this.frame = new JFrame("Free MC Bedrock");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(300, 150);
+        this.frame.setSize(500, 250);
         this.frame.setLocationRelativeTo(null);
         this.frame.setResizable(false);
         this.frame.setAlwaysOnTop(true);
@@ -75,6 +74,8 @@ public class McBedrock {
 
         final JLabel system = new JLabel("System: " + System.getProperty("os.name"));
         final JLabel arch = new JLabel("Architektura: " + System.getProperty("os.arch"));
+        final JLabel processor = new JLabel("Procesor: *WYKRYWANIE*");
+        final JLabel graphicCardsLabel = new JLabel("Karty Graficzne: *WYKRYWANIE*");
         final JLabel note = new JLabel("Uwagi: " + this.getSystemNote());
 
         final JButton jButton = new JButton("Uruchom");
@@ -89,20 +90,31 @@ public class McBedrock {
 
         jPanel.add(system);
         jPanel.add(arch);
+        jPanel.add(processor);
+        jPanel.add(graphicCardsLabel);
         jPanel.add(note);
         jPanel.add(Box.createVerticalGlue());
         jPanel.add(jButton);
 
         this.frame.add(jPanel, BorderLayout.CENTER);
         this.frame.setVisible(true);
+
+        new ThreadUtil("Detect").newThread(() -> {
+            final String processorName = SystemUtil.getProcesorName();
+            final String graphicCards = SystemUtil.getGraphicCardName();
+
+            processor.setText("Procesor: " + processorName);
+            graphicCardsLabel.setText("Karty Graficzne: " + graphicCards);
+        }).start();
+
     }
 
     private String getSystemNote() {
-        String note = "";
+        String note = "*BRAK*";
 
         if (this.systemOS != SystemOS.WINDOWS) {
             this.logger.critical("Twój system to nie windows!");
-            note += "Twój system to nie windows!\n";
+            note = "Twój system to nie windows!\n";
             this.supportedSystem = false;
 
             JOptionPane.showMessageDialog(null, "Twój system to nie windows", "Niewspierany system", JOptionPane.ERROR_MESSAGE);
