@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import pl.indianbartonka.freebedrock.util.DownloadAssetUtil;
 import pl.indianbartonka.util.FileUtil;
+import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
@@ -101,7 +102,7 @@ public class McBedrock {
 
         new ThreadUtil("Detect").newThread(() -> {
             final String processorName = SystemUtil.getProcesorName();
-            final String graphicCards = SystemUtil.getGraphicCardName();
+            final String graphicCards = MessageUtil.stringListToString(SystemUtil.getGraphicCardsName(), " | ");
 
             this.logger.info("&aProcesor:&b " + processorName);
             this.logger.info("&aKarty Graficzne:&b " + graphicCards);
