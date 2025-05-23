@@ -1,4 +1,4 @@
-package pl.indianbartonka.freebedrock.util;
+package pl.indianbartonka.freebedrock;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,49 +13,57 @@ import pl.indianbartonka.util.http.connection.request.Request;
 import pl.indianbartonka.util.http.connection.request.RequestBuilder;
 import pl.indianbartonka.util.logger.Logger;
 
-public final class DownloadAssetUtil {
+public class DownloadAssetUtil {
 
-    private static Logger logger;
+    private final Logger logger;
+    private final ProgressPanel progressBar;
 
-    public static void setLogger(final Logger logger) {
-        DownloadAssetUtil.logger = logger;
+    public DownloadAssetUtil(final Logger logger, final ProgressPanel progressBar) {
+        this.logger = logger;
+        this.progressBar = progressBar;
+        progressBar.setValue(0);
+        progressBar.setText("Status Pobierania");
     }
 
-    public static void downloadAssets() throws IOException, TimeoutException {
+    public void downloadAssets() throws IOException, TimeoutException {
         final File saveFile = new File(System.getProperty("user.dir") + File.separator + "assets.zip");
 
-        downloadFile(saveFile);
+        this.downloadFile(saveFile);
         ZipUtil.unzipFile(saveFile.getPath(), System.getProperty("user.dir"), false);
         FileUtil.deleteFile(saveFile);
 
-        logger.info("Pobrano i rozpakowano plik ZIP.");
+        this.logger.info("Pobrano i rozpakowano plik ZIP.");
     }
 
-    private static void downloadFile(final File saveFile) throws IOException, TimeoutException {
+    private void downloadFile(final File saveFile) throws IOException, TimeoutException {
         final DownloadListener downloadListener = new DownloadListener() {
             @Override
             public void onStart(final int definedBuffer, final File outputFile) {
-                logger.info("Zaczęto pobieranie");
+                DownloadAssetUtil.this.logger.info("Rozpoczęto pobieranie!");
+                DownloadAssetUtil.this.progressBar.setText("Rozpoczęto pobieranie!");
             }
 
             @Override
             public void onSecond(final int progress, final double formatedSpeed, final String remainingTimeString) {
-
+                DownloadAssetUtil.this.progressBar.setValue(progress);
+                DownloadAssetUtil.this.progressBar.setText(progress + "% " + formatedSpeed + " MB/s Pozostało " + remainingTimeString);
             }
 
             @Override
             public void onProgress(final int progress, final double formatedSpeed, final String remainingTimeString) {
-                logger.info(progress + "% " + formatedSpeed + " MB/s Pozostało " + remainingTimeString);
+                DownloadAssetUtil.this.logger.info(progress + "% " + formatedSpeed + " MB/s Pozostało " + remainingTimeString);
             }
 
             @Override
             public void onTimeout(final int timeOutSeconds) {
-
+                DownloadAssetUtil.this.progressBar.setValue(-1);
+                DownloadAssetUtil.this.progressBar.setText("Przekroczono limit czas!");
             }
 
             @Override
             public void onEnd(final File outputFile) {
-                logger.info("Pobrano: " + outputFile.getPath());
+                DownloadAssetUtil.this.progressBar.setValue(100);
+                DownloadAssetUtil.this.progressBar.setText("Wszytko pobrane!");
             }
 
             @Override
@@ -71,14 +79,15 @@ public final class DownloadAssetUtil {
         try (final Connection connection = new Connection(request)) {
             final HttpStatusCode statusCode = connection.getHttpStatusCode();
 
-            logger.info("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
+            this.logger.info("Kod odpowiedzi: " + statusCode + " (" + statusCode.getCode() + ")");
 
             if (statusCode.isSuccess()) {
                 final DownloadTask downloadTask = new DownloadTask(connection.getInputStream(), saveFile, connection.getContentLength(), 130, downloadListener);
 
                 downloadTask.downloadFile();
             } else {
-                logger.info(connection.getResponseMessage());
+                this.logger.info(connection.getResponseMessage());
+                this.progressBar.setText("Nie udało się pobrać assetów: " + connection.getResponseMessage());
             }
         }
     }

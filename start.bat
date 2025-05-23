@@ -24,5 +24,5 @@ pushd "%CD%"
 CD /D "%~dp0"
 :: BatchGotAdmin (Run as Admin code ends)
 :: Your codes should start from the following line
-java -jar .\FreeMinecraftBedrock-1.2.jar
+java -jar .\FreeMinecraftBedrock-1.3.jar
 pause

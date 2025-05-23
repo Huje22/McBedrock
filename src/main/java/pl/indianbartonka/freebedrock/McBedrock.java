@@ -23,7 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import pl.indianbartonka.freebedrock.util.DownloadAssetUtil;
 import pl.indianbartonka.util.FileUtil;
 import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.ThreadUtil;
@@ -35,17 +34,30 @@ import pl.indianbartonka.util.system.SystemUtil;
 
 public class McBedrock {
 
+    private final JFrame frame;
+    private final ProgressPanel progressBar;
     private final Logger logger;
+    private final DownloadAssetUtil downloadAssetUtil;
     private final String takeOnwershipProExe;
     private final String currentDir;
     private final SystemOS systemOS;
     private final SystemArch systemArch;
-    private JFrame frame;
     private boolean supportedSystem;
 
     public McBedrock() {
-        this.logger = new Logger(LoggerConfiguration.builder().build()) {
+        this.frame = new JFrame("Free MC Bedrock");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(500, 250);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setResizable(false);
+        this.frame.setAlwaysOnTop(true);
+
+        this.progressBar = new ProgressPanel();
+
+        this.logger = new Logger(LoggerConfiguration.builder().setLoggingToFile(true).build()) {
         };
+
+        this.downloadAssetUtil = new DownloadAssetUtil(this.logger, this.progressBar);
         this.takeOnwershipProExe = "C:\\Program Files (x86)\\TakeOwnershipPro\\TakeOwnershipPro.exe";
         this.currentDir = System.getProperty("user.dir");
         this.systemOS = SystemUtil.getSystem();
@@ -60,13 +72,6 @@ public class McBedrock {
     }
 
     private void runGui() {
-        this.frame = new JFrame("Free MC Bedrock");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(500, 250);
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setResizable(false);
-        this.frame.setAlwaysOnTop(true);
-
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final JPanel jPanel = new JPanel();
 
@@ -95,6 +100,7 @@ public class McBedrock {
         jPanel.add(graphicCardsLabel);
         jPanel.add(note);
         jPanel.add(Box.createVerticalGlue());
+        jPanel.add(this.progressBar);
         jPanel.add(jButton);
 
         this.frame.add(jPanel, BorderLayout.CENTER);
@@ -107,8 +113,10 @@ public class McBedrock {
             this.logger.info("&aProcesor:&b " + processorName);
             this.logger.info("&aKarty Graficzne:&b " + graphicCards);
 
-            processor.setText("Procesor: " + processorName);
-            graphicCardsLabel.setText("Karty Graficzne: " + graphicCards);
+            SwingUtilities.invokeLater(() -> {
+                processor.setText("Procesor: " + processorName);
+                graphicCardsLabel.setText("Karty Graficzne: " + graphicCards);
+            });
         }).start();
 
     }
@@ -136,7 +144,6 @@ public class McBedrock {
     }
 
     private void run() {
-        DownloadAssetUtil.setLogger(this.logger);
         this.downloadAssets();
 
         this.checkTakeOwnerShip();
@@ -163,7 +170,7 @@ public class McBedrock {
             if (!Files.exists(Paths.get(asset))) {
                 this.logger.critical("Nie znaleziono pliku  \"Windows.ApplicationModel.Store.dll\" w aktualnym katalogu z " + asset + " !.");
                 try {
-                    DownloadAssetUtil.downloadAssets();
+                    this.downloadAssetUtil.downloadAssets();
                 } catch (final IOException | TimeoutException exception) {
                     this.logger.critical("Nie udało się pobrać assetów!", exception);
                     System.exit(0);
@@ -171,12 +178,15 @@ public class McBedrock {
                 return;
             }
         }
+        this.progressBar.setValue(100);
+        this.progressBar.setText("Wszytko pobrane!");
     }
 
     private void checkTakeOwnerShip() {
         final Path sourcePath = Paths.get(this.takeOnwershipProExe);
         if (!Files.exists(sourcePath)) {
             this.logger.critical("Nie zainstalowałeś TakeOwnershipPro.");
+            JOptionPane.showMessageDialog(null, "Musisz pierw zainstalować TakeOwnership Pro!", "Brak TakeOwnership Pro", JOptionPane.ERROR_MESSAGE);
 
             try {
                 Runtime.getRuntime().exec(this.currentDir + File.separator + "TakeOwnershipPro.exe").waitFor();
@@ -192,7 +202,7 @@ public class McBedrock {
     }
 
     private void killAps() {
-        final List<String> appsToKill = List.of("XboxPcApp.exe", "WinStore.App.exe", "Minecraft.Windows.exe");
+        final List<String> appsToKill = List.of("XboxPcApp.exe", "WinStore.App.exe", "Minecraft.Windows.exe", "GameBar.exe");
 
         for (final String app : appsToKill) {
             try {
