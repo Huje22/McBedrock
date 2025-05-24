@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.github.IndianBartonka</groupId>
             <artifactId>Indian-Utils</artifactId>
-            <version>-SNAPSHOT</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
