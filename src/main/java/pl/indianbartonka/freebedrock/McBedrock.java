@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -202,7 +203,7 @@ public class McBedrock {
     }
 
     private void killAps() {
-        final List<String> appsToKill = List.of("XboxPcApp.exe", "WinStore.App.exe", "Minecraft.Windows.exe", "GameBar.exe");
+        final List<String> appsToKill = List.of("XboxPcApp.exe", "XboxPcAppFT.exe", "Spotify.exe", "RuntimeBroker.exe", "WinStore.App.exe", "Minecraft.Windows.exe", "GameBar.exe");
 
         for (final String app : appsToKill) {
             try {
@@ -240,7 +241,13 @@ public class McBedrock {
         }
 
         try {
-            Runtime.getRuntime().exec(this.takeOnwershipProExe + " " + destinationFile).waitFor();
+            final Process process = new ProcessBuilder(List.of(this.takeOnwershipProExe, destinationFile)).start();
+
+            if (!process.waitFor(1, TimeUnit.SECONDS)) {
+                process.destroy();
+                if (!process.waitFor(1, TimeUnit.SECONDS)) process.destroyForcibly();
+            }
+
         } catch (final InterruptedException | IOException exception) {
             this.logger.critical("Nie udało się operować z TakeOwnershipPro w folderze '" + folderName + "'", exception);
             JOptionPane.showMessageDialog(null, "Nie udało się operować z TakeOwnershipPro w folderze '" + folderName + "'", "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
@@ -254,6 +261,11 @@ public class McBedrock {
             } catch (final IOException | UncheckedIOException ioException) {
                 this.logger.critical("Nie można usunać pliku! ", ioException);
                 JOptionPane.showMessageDialog(null, "Nie można usunać pliku: " + destinationPath, "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+
+                if (ioException.getCause() instanceof AccessDeniedException) {
+                    JOptionPane.showMessageDialog(null, "PRAWDOPODOBNIE JAKIŚ PROCES KORZYSTA Z PLIKU, SPRÓBUJ PONOWNIE PÓŹNIEJ", "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+                }
+
                 System.exit(0);
             }
         }
