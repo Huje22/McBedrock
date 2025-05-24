@@ -54,7 +54,7 @@ public class McBedrock {
 
         this.progressBar = new ProgressPanel();
 
-        this.logger = new Logger(LoggerConfiguration.builder().setLoggingToFile(true).build()) {
+        this.logger = new Logger(LoggerConfiguration.builder().setOneLog(true).setLoggingToFile(true).build()) {
         };
 
         this.downloadAssetUtil = new DownloadAssetUtil(this.logger, this.progressBar);
