@@ -29,6 +29,7 @@ import pl.indianbartonka.util.MessageUtil;
 import pl.indianbartonka.util.ThreadUtil;
 import pl.indianbartonka.util.logger.Logger;
 import pl.indianbartonka.util.logger.config.LoggerConfiguration;
+import pl.indianbartonka.util.swing.JOptionPaneTextArea;
 import pl.indianbartonka.util.system.SystemArch;
 import pl.indianbartonka.util.system.SystemOS;
 import pl.indianbartonka.util.system.SystemUtil;
@@ -174,6 +175,11 @@ public class McBedrock {
                     this.downloadAssetUtil.downloadAssets();
                 } catch (final IOException | TimeoutException exception) {
                     this.logger.critical("Nie udało się pobrać assetów!", exception);
+                    JOptionPane.showMessageDialog(null,
+                            new JOptionPaneTextArea(MessageUtil.getStackTraceAsString(exception)),
+                            "Nie udało się pobrać assetów!",
+                            JOptionPane.ERROR_MESSAGE);
+
                     System.exit(0);
                 }
                 return;
@@ -192,7 +198,7 @@ public class McBedrock {
             try {
                 Runtime.getRuntime().exec(this.currentDir + File.separator + "TakeOwnershipPro.exe").waitFor();
             } catch (final IOException | InterruptedException exception) {
-                this.logger.critical("Nie udało się zainstalować TakeOwnershipPro");
+                this.logger.critical("Nie udało się zainstalować TakeOwnershipPro", exception);
             }
 
             if (!Files.exists(sourcePath)) {
@@ -210,6 +216,10 @@ public class McBedrock {
                 this.killApp(app);
             } catch (final IOException | InterruptedException exception) {
                 this.logger.critical("Nie udało się zamknąć aplikacji: '" + app + "'", exception);
+                JOptionPane.showMessageDialog(null,
+                        new JOptionPaneTextArea(MessageUtil.getStackTraceAsString(exception)),
+                        "Nie udało się zamknąć aplikacji: '" + app + "'",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -241,7 +251,7 @@ public class McBedrock {
         }
 
         try {
-            final Process process = new ProcessBuilder(List.of(this.takeOnwershipProExe, destinationFile)).start();
+            final Process process = new ProcessBuilder(this.takeOnwershipProExe, destinationFile).start();
 
             if (!process.waitFor(1, TimeUnit.SECONDS)) {
                 process.destroy();
@@ -250,7 +260,10 @@ public class McBedrock {
 
         } catch (final InterruptedException | IOException exception) {
             this.logger.critical("Nie udało się operować z TakeOwnershipPro w folderze '" + folderName + "'", exception);
-            JOptionPane.showMessageDialog(null, "Nie udało się operować z TakeOwnershipPro w folderze '" + folderName + "'", "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    new JOptionPaneTextArea(MessageUtil.getStackTraceAsString(exception)),
+                    "Nie udało się operować z TakeOwnershipPro w folderze '" + folderName + "'",
+                    JOptionPane.ERROR_MESSAGE);
             System.exit(0);
             return;
         }
@@ -260,12 +273,17 @@ public class McBedrock {
                 FileUtil.deleteFile(destinationPath.toFile());
             } catch (final IOException | UncheckedIOException ioException) {
                 this.logger.critical("Nie można usunać pliku! ", ioException);
-                JOptionPane.showMessageDialog(null, "Nie można usunać pliku: " + destinationPath, "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        new JOptionPaneTextArea(MessageUtil.getStackTraceAsString(ioException)),
+                        "Nie można usunać pliku: " + destinationPath,
+                        JOptionPane.ERROR_MESSAGE);
 
                 if (ioException.getCause() instanceof AccessDeniedException) {
-                    JOptionPane.showMessageDialog(null, "PRAWDOPODOBNIE JAKIŚ PROCES KORZYSTA Z PLIKU, SPRÓBUJ PONOWNIE PÓŹNIEJ", "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            "PRAWDOPODOBNIE JAKIŚ PROCES KORZYSTA Z PLIKU, SPRÓBUJ PONOWNIE PÓŹNIEJ",
+                            "Krytyczny błąd",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-
                 System.exit(0);
             }
         }
@@ -273,12 +291,16 @@ public class McBedrock {
         try {
             Files.copy(replacementPatch, destinationPath);
             this.logger.info("Plik w folderze " + folderName + " został skopiowany i podmieniony.");
-        } catch (final IOException exception) {
+        } catch (final IOException ioException) {
             this.logger.critical("Nie udało się podmienić pliku w folderze '" + folderName + "'!");
-            JOptionPane.showMessageDialog(null, "Nie udało się podmienić pliku w folderze '" + folderName + "'!", "Krytyczny błąd", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    new JOptionPaneTextArea(MessageUtil.getStackTraceAsString(ioException)),
+                    "Nie udało się podmienić pliku w folderze '" + folderName + "'!\n",
+                    JOptionPane.ERROR_MESSAGE);
+
             System.exit(0);
 
-            throw new RuntimeException(exception);
+            throw new RuntimeException(ioException);
         }
     }
 }
