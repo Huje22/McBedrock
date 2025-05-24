@@ -12,10 +12,12 @@ Musisz posiadać pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Javę 17
 
 ---
 
-#### Jak pobrać Javę 23?
+#### Jak pobrać Javę?
 
-* Instalujesz po prostu ten plik [(Kliknij Mnie)](https://download.oracle.com/java/23/latest/jdk-23_windows-x64_bin.msi),
-  instalator jest łatwy w obsłudze
+* Wejdź na strone <u>adoptium.net</u> i pobierz najnowsza Jave (wybierz JRE jeśli nie jesteś developerem java) jeśli nie
+  możesz
+  znaleźć odpowiedniej wersji dla
+  ciebie <u>[ta wersja powinna być optymalna](https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.7%2B6/OpenJDK21U-jre_x64_windows_hotspot_21.0.7_6.msi)</u>
 
 #### Jak pobrać Demo?
 
@@ -27,17 +29,12 @@ Musisz posiadać pobrane Demo Minecraft Bedrock i <b><u>minimum</u></b> Javę 17
 #### Pierwsze kroki<br/>
 
 * Pobierz plik `FreeMinecraftBedrock-X.X.jar` i `start.bat`
-  z [Github Releases](https://github.com/Huje22/McBedrock/releases/tag/1.0)
-  * X.X oznacza najnowszą wersję
+  z [Github Releases](https://github.com/Huje22/McBedrock/releases/)
+    * X.X oznacza najnowszą wersję
 * Odpal plik `start.bat`, musisz to zrobić jako administrator
-  * Wyskoczy ci okno po odpaleniu pliku BAT, aby odpalić program jako administrator, po prostu kliknij `TAK`
+    * Wyskoczy ci okno po odpaleniu pliku BAT, aby odpalić program jako administrator, po prostu kliknij `TAK`
 * <u> Jeśli twój system jest zgodny, możesz kliknąć guzik <b>Uruchom</b> </u>
 * Pobiorą się różne assety, zaczekaj cierpliwie
 * Zainstaluj TakeOwnershipPro, jeśli go nie posiadasz
-  * Pojawi się instalator, również jest łatwy w obsłudze
-
-#### Następnie
-
-* Gdy wyskoczy ci okienko z guzikiem `TakeOwnership`, kliknij na plik, potem guzik `TAKE OWNERSHIP`, a
-  następnie `exit`. Wyskoczy drugie takie samo okno, tam to samo
+    * Pojawi się instalator, postępuj zgodnie z instrukcjami
 * Jeśli w konsoli nie ma dodatkowych błędów, ciesz się zdjętym demo! <br/>
