@@ -38,7 +38,7 @@ public class DownloadAssetUtil {
     private void downloadFile(final File saveFile) throws IOException, TimeoutException {
         final DownloadListener downloadListener = new DownloadListener() {
             @Override
-            public void onStart(final int definedBuffer, final File outputFile) {
+            public void onStart(final int definedBuffer, final long fileSize, final File outputFile) {
                 DownloadAssetUtil.this.logger.info("Rozpoczęto pobieranie!");
                 DownloadAssetUtil.this.progressBar.setText("Rozpoczęto pobieranie!");
             }
